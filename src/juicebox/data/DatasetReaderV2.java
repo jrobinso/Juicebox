@@ -533,22 +533,24 @@ public class DatasetReaderV2 extends AbstractDatasetReader {
 
             // Normalization vectors (indexed)
 
-            nEntries = dis.readInt();
-            normVectorIndex = new HashMap<>(nEntries * 2);
-            for (int i = 0; i < nEntries; i++) {
+            if (normVectorIndexNotLoaded) {
+                nEntries = dis.readInt();
+                normVectorIndex = new HashMap<>(nEntries * 2);
+                for (int i = 0; i < nEntries; i++) {
 
-                NormalizationType type = dataset.getNormalizationHandler().getNormTypeFromString(dis.readString());
-                int chrIdx = dis.readInt();
-                String unit = dis.readString();
-                int resolution = dis.readInt();
-                long filePosition = dis.readLong();
-                int sizeInBytes = dis.readInt();
+                    NormalizationType type = dataset.getNormalizationHandler().getNormTypeFromString(dis.readString());
+                    int chrIdx = dis.readInt();
+                    String unit = dis.readString();
+                    int resolution = dis.readInt();
+                    long filePosition = dis.readLong();
+                    int sizeInBytes = dis.readInt();
 
-                String key = NormalizationVector.getKey(type, chrIdx, unit, resolution);
+                    String key = NormalizationVector.getKey(type, chrIdx, unit, resolution);
 
-                dataset.addNormalizationType(type);
+                    dataset.addNormalizationType(type);
 
-                normVectorIndex.put(key, new Preprocessor.IndexEntry(filePosition, sizeInBytes));
+                    normVectorIndex.put(key, new Preprocessor.IndexEntry(filePosition, sizeInBytes));
+                }
             }
         }
     }
