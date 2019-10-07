@@ -49,6 +49,7 @@ public class PreProcessing extends JuiceboxCLT {
     public PreProcessing() {
         super(getBasicUsage()+"\n"
                 + "           : -d only calculate intra chromosome (diagonal) [false]\n"
+                + "           : -i include intra-fragment reads [false]\n"
                 + "           : -f <restriction site file> calculate fragment map\n"
                 + "           : -m <int> only write cells with count above threshold m [0]\n"
                 + "           : -q <int> filter by MAPQ score greater than or equal to q [not set]\n"
@@ -96,6 +97,7 @@ public class PreProcessing extends JuiceboxCLT {
         preprocessor.setCountThreshold(parser1.getCountThresholdOption());
         preprocessor.setMapqThreshold(parser1.getMapqThresholdOption());
         preprocessor.setDiagonalsOnly(parser1.getDiagonalsOption());
+        preprocessor.setIncludedIntraFragments(parser1.getIntraFragmentsOption());
         preprocessor.setFragmentFile(parser1.getFragmentOption());
         preprocessor.setExpectedVectorFile(parser1.getExpectedVectorOption());
         preprocessor.setTmpdir(tmpDir);

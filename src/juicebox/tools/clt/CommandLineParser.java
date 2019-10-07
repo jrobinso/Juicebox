@@ -37,6 +37,7 @@ public class CommandLineParser extends CmdLineParser {
 
     // boolean
     private static Option diagonalsOption = null;
+    private static Option intraFragmentOption = null;
     private static Option helpOption = null;
     private static Option removeCacheMemoryOption = null;
     private static Option verboseOption = null;
@@ -79,8 +80,10 @@ public class CommandLineParser extends CmdLineParser {
 
         // used
         // d h x v n p F V f t s g m q w c r z a y
+        // option i is added to include 'intra-fragment reads won't get thrown out when i is used'
 
         diagonalsOption = addBooleanOption('d', "diagonals");
+        intraFragmentOption = addBooleanOption('i', "intra-fragments");
         helpOption = addBooleanOption('h', "help");
         removeCacheMemoryOption = addBooleanOption('x', "remove_memory_cache");
         verboseOption = addBooleanOption('v', "verbose");
@@ -127,6 +130,10 @@ public class CommandLineParser extends CmdLineParser {
 
     public boolean getDiagonalsOption() {
         return optionToBoolean(diagonalsOption);
+    }
+
+    public boolean getIntraFragmentsOption() {
+        return optionToBoolean(intraFragmentOption);
     }
 
     public boolean useCacheMemory() {

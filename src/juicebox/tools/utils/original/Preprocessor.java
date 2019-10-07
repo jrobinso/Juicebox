@@ -73,6 +73,7 @@ public class Preprocessor {
     private int countThreshold = 0;
     private int mapqThreshold = 0;
     private boolean diagonalsOnly = false;
+    private boolean includedIntraFragments = false;
     private String fragmentFileName = null;
     private String statsFileName = null;
     private String graphFileName = null;
@@ -136,6 +137,10 @@ public class Preprocessor {
 
     public void setDiagonalsOnly(boolean diagonalsOnly) {
         this.diagonalsOnly = diagonalsOnly;
+    }
+
+    public void setIncludedIntraFragments(boolean includedIntraFragments) {
+        this.includedIntraFragments = includedIntraFragments;
     }
 
     public void setIncludedChromosomes(Set<String> includedChromosomes) {
@@ -739,8 +744,15 @@ public class Preprocessor {
                     bp1 = randomizePos(fragMapToUse, chromosomeHandler.getChromosomeFromIndex(chr1).getName(), frag1);
                     bp2 = randomizePos(fragMapToUse, chromosomeHandler.getChromosomeFromIndex(chr2).getName(), frag2);
                 }
-                // only increment if not intraFragment and passes the mapq threshold
-                if (mapq < mapqThreshold || (chr1 == chr2 && frag1 == frag2)) continue;
+
+                // if includedIntraFragments, increment when passes the mapq threshold
+                // if not (by default), increment when not intraFragment and passes mapq threshold
+                if (includedIntraFragments) {
+                    if (mapq < mapqThreshold) continue;
+                } else {
+                    if (mapq < mapqThreshold || (chr1 == chr2 && frag1 == frag2)) continue;
+                }
+
                 if (!(currentChr1 == chr1 && currentChr2 == chr2)) {
                     // Starting a new matrix
                     if (currentMatrix != null) {
